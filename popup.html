@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Reload-Assist</title>
+  <link rel="stylesheet" href="styles.css">
+  <script type="module" src="popup.js"></script>
+</head>
+<body class="popup">
+  <header class="popup-header">
+    <img class="app-icon" src="icons/icon-48.png" width="40" height="40" alt="">
+    <h1>Reload-Assist</h1>
+  </header>
+  <main class="popup-main">
+    <div class="popup-status">
+      <label class="switch-row" for="enabled">
+        <span>Automatic refresh</span>
+        <input class="switch" id="enabled" type="checkbox" role="switch" disabled>
+      </label>
+      <dl class="popup-details">
+        <div><dt>Scope</dt><dd id="scope">—</dd></div>
+        <div><dt>Interval</dt><dd id="interval">—</dd></div>
+        <div><dt>Last refresh</dt><dd id="last-refresh">—</dd></div>
+      </dl>
+    </div>
+    <div class="next-refresh">
+      <span>Next refresh</span>
+      <strong id="next-refresh">—</strong>
+    </div>
+    <p class="message error" id="message" role="alert" hidden></p>
+  </main>
+  <footer class="popup-footer">
+    <a href="settings.html" target="_blank" rel="noopener">Settings</a>
+    <a href="settings.html#log" target="_blank" rel="noopener">Refresh log</a>
+  </footer>
+</body>
+</html>

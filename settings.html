@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Reload-Assist</title>
+  <link rel="stylesheet" href="styles.css">
+  <script type="module" src="settings.js"></script>
+</head>
+<body class="settings">
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="#settings">
+        <img class="app-icon" src="icons/icon-48.png" width="36" height="36" alt="">
+        <span>Reload-Assist</span>
+      </a>
+      <nav class="navigation" aria-label="Reload-Assist">
+        <a id="settings-link" href="#settings">Settings</a>
+        <a id="log-link" href="#log">Refresh log</a>
+      </nav>
+    </div>
+  </header>
+  <main class="workspace">
+    <p class="message error" id="load-error" role="alert" hidden></p>
+    <section id="settings-view" aria-labelledby="settings-title">
+      <div class="page-intro">
+        <div><h1 id="settings-title">Refresh settings</h1><p>Choose how often to refresh and which tabs to include.</p></div>
+        <span class="status-pill" id="status-pill" hidden></span>
+      </div>
+      <div class="card management">
+        <div class="card-heading">
+          <div>
+            <h2><label for="enabled">Automatic refresh</label></h2>
+            <p>Turn this off to pause all automatic refreshes.</p>
+          </div>
+          <input class="switch" id="enabled" type="checkbox" role="switch" disabled>
+        </div>
+        <form class="interval-form" id="interval-form">
+          <div class="field">
+            <label for="interval">Refresh every</label>
+            <div class="input-unit">
+              <input id="interval" type="number" min="1" max="1440" step="1" value="60" required disabled>
+              <span aria-hidden="true">minutes</span>
+            </div>
+          </div>
+          <button class="button" id="save-interval" type="submit" disabled>Save interval</button>
+        </form>
+        <p class="message" id="interval-message" role="status" hidden></p>
+      </div>
+
+      <div class="card">
+        <div class="card-heading">
+          <div><h2>Tabs to refresh</h2><p>Apply the same interval across all browser windows.</p></div>
+        </div>
+        <fieldset class="scope-options" aria-label="Tabs to refresh">
+          <label class="scope-option">
+            <input type="radio" name="scope" value="all" disabled>
+            <span><strong>All web tabs</strong><small>Every open HTTP or HTTPS tab</small></span>
+          </label>
+          <label class="scope-option">
+            <input type="radio" name="scope" value="specific" disabled>
+            <span><strong>Specific sites</strong><small>Tabs that match one or more rules</small></span>
+          </label>
+        </fieldset>
+        <p class="message error" id="scope-message" role="alert" hidden></p>
+
+        <div class="site-rules" id="site-rules" hidden>
+          <h3>Site rules</h3>
+          <form id="rule-form" class="rule-form">
+            <div class="field">
+              <label for="rule-type">Match type</label>
+              <select id="rule-type"></select>
+            </div>
+            <div class="field rule-value">
+              <label for="rule-value">Match value</label>
+              <input id="rule-value" type="text" maxlength="2048" required spellcheck="false" autocapitalize="off" autocomplete="off">
+            </div>
+            <button class="button primary" id="save-rule" type="submit">Add rule</button>
+            <button class="button" type="button" id="cancel-rule" hidden>Cancel</button>
+          </form>
+          <p class="message" id="rule-message" role="status" hidden></p>
+          <p class="empty-line" id="rules-empty">Add a rule to start refreshing specific sites.</p>
+          <ul class="rule-list" id="rule-list"></ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="log-view" aria-labelledby="log-title" hidden>
+      <div class="page-intro">
+        <div><h1 id="log-title">Refresh log</h1><p>View up to 30 days of local records, grouped by domain.</p></div>
+      </div>
+      <div class="card log-card">
+        <form id="log-filters" class="log-controls">
+          <div class="field">
+            <label for="date-from">Start date</label>
+            <input id="date-from" type="date">
+          </div>
+          <div class="field">
+            <label for="date-through">End date</label>
+            <input id="date-through" type="date">
+          </div>
+          <button class="button primary" id="export" type="submit" disabled>Download CSV</button>
+          <button class="button danger clear-log" id="clear-log" type="button" disabled>Clear log</button>
+        </form>
+        <p class="message error" id="log-error" role="alert" hidden></p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th scope="col">Site</th><th scope="col">Refresh time</th><th scope="col">Requested</th><th scope="col">Failed</th></tr></thead>
+            <tbody id="log-rows"></tbody>
+          </table>
+          <p class="empty-line log-empty" id="log-empty">No refreshes logged yet.</p>
+        </div>
+        <div class="table-footer">
+          <span id="result-count" role="status"></span>
+          <div class="pagination" id="pagination" hidden>
+            <button class="button" id="previous" type="button">Previous</button>
+            <button class="button" id="next" type="button">Next</button>
+          </div>
+        </div>
+      </div>
+      <p class="log-note">Requested counts reload commands accepted by the browser. CSV timestamps use UTC.</p>
+    </section>
+  </main>
+
+  <dialog id="clear-dialog" aria-labelledby="clear-title">
+    <form method="dialog">
+      <h2 id="clear-title">Clear the entire refresh log?</h2>
+      <p>This permanently deletes all stored entries, including entries outside the selected dates.</p>
+      <div class="dialog-actions">
+        <button class="button" value="cancel" autofocus>Cancel</button>
+        <button class="button danger" value="clear">Clear log</button>
+      </div>
+    </form>
+  </dialog>
+</body>
+</html>
